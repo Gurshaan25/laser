@@ -75,7 +75,7 @@ def do_UV_approximation(weight, r, me_lr=0.0001, n_iter=300):
     V = torch.rand((r, n), dtype=torch.float32) * 2 - 1
     U.requires_grad_()
     V.requires_grad_()
-    optimizer = optim.SGD([U, V], lr=me_lr, momentum=5, nesterov=True)
+    optimizer = optim.SGD([U, V], lr=me_lr, momentum=0.5, nesterov=True)
     optimizer.zero_grad()
     bar = tqdm(range(n_iter))
     for _ in bar:
