@@ -59,7 +59,7 @@ def do_low_rank(weight, k, debug=False, niter=2):
 
     return weight_approx
 
-def do_UV_approximation(weight, r, me_lr=0.0001, n_iter=300):
+def do_UV_approximation(weight, r, me_lr=0.0001, n_iter=200):
     #TODO: try pytorch's opt
     assert weight.ndim == 2
     m = weight.shape[0]
