@@ -66,7 +66,7 @@ def do_low_rank_best_k_of_y(weight, k, y=6, niter=2):
 
     max_rank = min(weight.shape[0], weight.shape[1])
     desired_rank = int(max_rank * k)
-
+    print(desired_rank)
     assert len(indices) == desired_rank
 
     U, S, V = torch.svd_lowrank(weight, 
