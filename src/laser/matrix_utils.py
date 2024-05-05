@@ -72,7 +72,12 @@ def do_low_rank_best_k_of_y(weight, k, y=6, niter=2):
     U, S, V = torch.svd_lowrank(weight, 
                                 q=y, 
                                 niter=niter)
-    weight_approx = U[: indices] @ torch.diag(S[indices]) @ V[:, indices].T
+    
+    U_approx = torch.index_select(U, 1, torch.tensor(indices))
+    S_approx = torch.diag(torch.index_select(S, 0, torch.tensor(indices)))
+    V_approx = torch.index_select(V, 1, torch.tensor(indices))
+
+    weight_approx = U_approx @ S_approx @ V_approx
 
     assert weight_approx.shape[0] == weight.shape[0] and weight_approx.shape[1] == weight.shape[1]
     weight_approx = torch.nn.Parameter(weight_approx)
