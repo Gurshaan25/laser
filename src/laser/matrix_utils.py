@@ -59,7 +59,7 @@ def do_low_rank(weight, k, debug=False, niter=2):
 
     return weight_approx
 
-def do_low_rank_best_k_of_y(weight, k, val, y=6, niter=2):
+def do_low_rank_best_k_of_y(weight, k, y=6, niter=2):
     assert weight.ndim == 2
 
     indices = [1, 2, 3, 4]
@@ -73,8 +73,9 @@ def do_low_rank_best_k_of_y(weight, k, val, y=6, niter=2):
                                 q=y, 
                                 niter=niter)
     weight_approx = U[: indices] @ torch.diag(S[indices]) @ V[:, indices].T
-    weight_approx = torch.nn.Parameter(weight_approx)
 
+    assert weight_approx.shape[0] == weight.shape[0] and weight_approx.shape[1] == weight.shape[1]
+    weight_approx = torch.nn.Parameter(weight_approx)
     return weight_approx
 
 def do_UV_approximation(weight, r, me_lr=0.0001, n_iter=300):
