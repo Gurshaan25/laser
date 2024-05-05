@@ -75,7 +75,7 @@ def do_low_rank_best_k_of_y(weight, k, y=6, niter=2):
     
     U_approx = torch.index_select(U, 1, torch.tensor(indices))
     S_approx = torch.diag(torch.index_select(S, 0, torch.tensor(indices)))
-    V_approx = torch.index_select(V, 1, torch.tensor(indices))
+    V_approx = torch.index_select(V.T, 1, torch.tensor(indices))
 
     weight_approx = U_approx @ S_approx @ V_approx
 
