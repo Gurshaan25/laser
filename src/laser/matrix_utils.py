@@ -59,7 +59,25 @@ def do_low_rank(weight, k, debug=False, niter=2):
 
     return weight_approx
 
-def do_UV_approximation(weight, r, me_lr=0.0001, n_iter=200):
+def do_low_rank_best_k_of_y(weight, k, val, y=6, niter=2):
+    assert weight.ndim == 2
+
+    indices = [1, 2, 3, 4]
+
+    max_rank = min(weight.shape[0], weight.shape[1])
+    desired_rank = int(max_rank * k)
+
+    assert len(indices) == desired_rank
+
+    U, S, V = torch.svd_lowrank(weight, 
+                                q=y, 
+                                niter=niter)
+    weight_approx = U[: indices] @ torch.diag(S[indices]) @ V[:, indices].T
+    weight_approx = torch.nn.Parameter(weight_approx)
+
+    return weight_approx
+
+def do_UV_approximation(weight, r, me_lr=0.0001, n_iter=300):
     #TODO: try pytorch's opt
     assert weight.ndim == 2
     m = weight.shape[0]

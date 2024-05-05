@@ -3,7 +3,7 @@ import numpy as np
 
 from copy import deepcopy
 from laser.abstract_laser import AbstractLaser
-from laser.matrix_utils import do_low_rank, sorted_mat, prune, do_UV_approximation, rank
+from laser.matrix_utils import do_low_rank, sorted_mat, prune, do_UV_approximation, rank, do_low_rank_best_k_of_y
 
 
 class GPTJLaser(AbstractLaser):
@@ -83,7 +83,7 @@ class GPTJLaser(AbstractLaser):
         return modify_flag
 
     @staticmethod
-    def get_edited_model(model, lname, lnum, rate, intervention="rank-reduction", logger=None, in_place=True):
+    def get_edited_model(model, lname, lnum, rate, intervention="rank-reduction", logger=None, in_place=True, validation=None):
 
         if in_place:
             model_edit = model
@@ -133,7 +133,11 @@ class GPTJLaser(AbstractLaser):
                 #detached = mat_analysis_tensor.detach().cpu().numpy().astype(np.float32)
                 #r = rank(detached)
                 mat_analysis = do_UV_approximation(mat_analysis_tensor.type(torch.float32), 4)
-
+            
+            elif intervention == 'low-rank-reduction-nonuniform':
+                mat_analysis_tensor = deepcopy(param)
+                mat_analysis = do_low_rank_best_k_of_y(mat_analysis_tensor.type(torch.float32), (10 - rate) * 0.1)
+                pass
             else:
                 raise AssertionError(f"Unhandled intervention type {intervention}")
 
