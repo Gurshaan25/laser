@@ -132,7 +132,7 @@ class GPTJLaser(AbstractLaser):
                 mat_analysis_tensor = deepcopy(param)
                 #detached = mat_analysis_tensor.detach().cpu().numpy().astype(np.float32)
                 #r = rank(detached)
-                mat_analysis = do_UV_approximation(mat_analysis_tensor.type(torch.float32), 4)
+                mat_analysis = do_UV_approximation(mat_analysis_tensor.type(torch.float32), (10 - rate) * 0.1)
             
             elif intervention == 'low-rank-reduction-nonuniform':
                 mat_analysis_tensor = deepcopy(param)

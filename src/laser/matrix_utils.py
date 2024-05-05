@@ -86,9 +86,13 @@ def do_low_rank_best_k_of_y(weight, k, y=6, niter=2):
     weight_approx = torch.nn.Parameter(weight_approx)
     return weight_approx
 
-def do_UV_approximation(weight, r, me_lr=0.0001, n_iter=300):
+def do_UV_approximation(weight, k, me_lr=0.0001, n_iter=300):
     #TODO: try pytorch's opt
     assert weight.ndim == 2
+
+    max_rank = min(weight.shape[0], weight.shape[1])
+    r = int(max_rank * k)
+
     m = weight.shape[0]
     n = weight.shape[1]
     m = int(m)
