@@ -62,7 +62,7 @@ def do_low_rank(weight, k, debug=False, niter=2):
 def do_low_rank_best_k_of_y(weight, k, y=6, niter=2):
     assert weight.ndim == 2
 
-    indices = [1, 2, 3, 4]
+    indices = [1, 2, 3, 5]
 
     max_rank = min(weight.shape[0], weight.shape[1])
     desired_rank = int(max_rank * k)
